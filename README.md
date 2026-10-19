@@ -1,25 +1,31 @@
 # arXiv Research Chatbot
 
-A Python chatbot that uses Anthropic's Claude API and tool calling to search for academic papers on arXiv, retrieve paper metadata, and generate research summaries.
+A Python research assistant that integrates Anthropic's Claude API, the arXiv API, and the Model Context Protocol (MCP) to discover, retrieve, and summarize academic research papers.
 
-Built as a learning project while taking DeepLearning.AI's *MCP: Build Rich-Context AI Apps with Anthropic* course.
+The project includes a command-line chatbot using Claude's native tool calling and a separate MCP server that exposes research tools to compatible MCP clients.
+
+Developed as a learning project based on DeepLearning.AI's *MCP: Build Rich-Context AI Apps with Anthropic* course.
 
 ## Features
 
 - Search arXiv for academic papers by topic.
 - Retrieve paper titles, authors, abstracts, publication dates, and PDF URLs.
-- Save paper metadata locally in JSON files, organized by topic.
-- Look up previously saved papers by arXiv ID.
-- Use Claude's tool-calling capabilities to execute searches and retrieve information.
-- Interact with the chatbot through a command-line interface.
+- Store paper metadata locally in JSON files, organized by topic.
+- Retrieve previously saved papers by arXiv ID
+- Generate research summaries using Claude and tool calling
+- Interact with the research chatbot through a command-line interface
+- Expose research functionality through an MCP server
+- Discover and test MCP tools using MCP Inspector
 
 ## Tech Stack
 
 - **Python 3.12+**
 - **uv** — Dependency and environment management
 - **Anthropic SDK** — Claude API integration
+- **MCP Python SDK** — MCP server implementation and tool registration
 - **arxiv** — Python wrapper for the arXiv API
 - **python-dotenv** — Environment variable management
+- **MCP Inspector** — MCP server testing and debugging
 
 ## Project Structure
 
@@ -32,6 +38,7 @@ chatbot/
 │       ├── chatbot.py        # Claude integration and tool execution
 │       ├── tools.py          # arXiv search and retrieval functions
 │       └── tool_schema.py    # Tool definitions
+│       └── research_server.py# MCP Server
 ├── papers/                   # Locally saved paper metadata
 ├── .env.example
 ├── .gitignore
@@ -66,14 +73,40 @@ uv run chatbot
 
 Enter a research topic or question at the prompt. Type `quit` to exit.
 
-## How It Works
+**4. Run the MCP server**
 
-1. The user submits a research question.
-2. Claude determines whether a tool is needed.
-3. The application executes the requested Python function.
-4. The `search_papers` tool queries arXiv and stores paper metadata in JSON files.
-5. The `extract_info` tool retrieves information about a previously saved paper.
-6. Tool results are returned to Claude, which generates a response.
+```bash
+uv run python -m chatbot.research_server
+```
+
+The MCP server uses the stdio transport and waits for connections from an MCP client.
+
+**5. Test the MCP server with MCP Inspector**
+
+```bash
+npx @modelcontextprotocol/inspector uv run python -m chatbot.research_server
+```
+Open the local Inspector URL displayed in the terminal, connect to the server, and test the available tools.
+
+## How It Works
+The project currently has two components:
+
+### Claude Research Chatbot
+
+1. The user submits a research question
+2. Claude receives the question and available tool definitions
+3. Claude decides whether to request a tool
+4. The Python application executes the requested function
+5. Tool results are returned to Claude
+6. Claude generates a natural-language response
+
+### MCP Research Server
+
+1. The MCP server exposes research tools using the Python MCP SDK
+2. Tool schemas are generated from Python function signatures and docstrings
+3. An MCP client discovers and invokes available tools
+4. The server executes the requested Python functions and returns their results
+5. Research metadata is stored locally in JSON files organized by topic
 
 ## Available Tools
 
@@ -84,12 +117,14 @@ Enter a research topic or question at the prompt. Type `quit` to exit.
 
 ## Notes
 
-- The application saves paper metadata, not PDF files.
-- Chat history is not persisted between queries.
-- The project currently uses Anthropic's native tool-calling API. It is not yet an MCP server.
+- The application saves paper metadata, not PDF files
+- Chat history is not persisted between queries
+- The Claude chatbot currently uses Anthropic's native tool-calling API
+- The MCP server is implemented separately and can be tested using MCP Inspector
+- The existing chatbot is not yet connected to the MCP server.
 - API requests may be subject to arXiv rate limits.
-- Keep API credentials out of version control.
+- Keep API credentials must remain outside version control.
 
 ## Acknowledgments
 
-Based on the chatbot example from DeepLearning.AI's *MCP: Build Rich-Context AI Apps with Anthropic* course, adapted into a local Python project using VS Code and uv.
+Inspired by DeepLearning.AI'ss *MCP: Build Rich-Context AI Apps with Anthropic* course, adapted into a local Python project using VS Code and uv.
