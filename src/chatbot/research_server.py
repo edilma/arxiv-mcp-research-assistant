@@ -3,7 +3,9 @@ import json
 import os
 from typing import List
 import pathlib
-from mcp.server.fastmcp import FastMCPServer
+#from mcp.server.fastmcp import FastMCPServer
+from mcp.server.mcpserver import MCPServer
+
 
 
 
@@ -13,7 +15,7 @@ PAPER_DIR = PROJECT_ROOT / "papers"
 
 
 #initialize FastMCPServer
-mcp= FastMCPServer("research")
+mcp= MCPServer("research")
 
 #The first tool searches for relevant arXiv papers based on a topic and stores the papers' #info in a JSON file (title, authors, summary, paper url and the publication date). The JSON #files are organized by topics in the papers directory. The tool does not download the #papers.
 @mcp.tool()
@@ -111,4 +113,4 @@ def extract_info(paper_id: str) -> str:
 
 
 if __name__ == "__main__":
-    mcp.run()
+    mcp.run(transport="stdio") 
