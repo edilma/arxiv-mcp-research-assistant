@@ -1,8 +1,6 @@
 import json
-
 from dotenv import load_dotenv
 import anthropic
-
 from .tools import search_papers, extract_info
 from .tool_schema import tools
 

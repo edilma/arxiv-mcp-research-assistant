@@ -34,10 +34,12 @@ chatbot/
 ├── src/
 │   └── chatbot/
 │       ├── __init__.py
-│       ├── main.py           # CLI entry point
-│       ├── chatbot.py        # Claude integration and tool execution
-│       ├── tools.py          # arXiv search and retrieval functions
-│       └── tool_schema.py    # Tool definitions
+│       ├── main.py           # Original chatbot entry point
+│       ├── chatbot.py        # Original Claude chatbot
+│       ├── mcp_main.py       # New MCP chatbot entry point
+│       ├── mcp_chatbot.py    # New MCP client orchestration
+│       ├── tools.py          # arXiv functions
+│       └── tool_schema.py    # Original Claude Tool Schemas
 │       └── research_server.py# MCP Server
 ├── papers/                   # Locally saved paper metadata
 ├── .env.example

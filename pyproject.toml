@@ -17,6 +17,7 @@ dependencies = [
 
 [project.scripts]
 chatbot = "chatbot.main:main"
+mcp-chatbot = "chatbot.mcp_main:run"
 
 [build-system]
 requires = ["uv_build>=0.12.23,<0.13.0"]

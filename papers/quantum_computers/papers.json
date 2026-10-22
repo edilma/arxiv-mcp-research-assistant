@@ -1,0 +1,55 @@
+{
+    "2512.10504v2": {
+        "title": "Tianyan: Cloud services with quantum advantage",
+        "authors": [
+            " Tianyan Quantum Group"
+        ],
+        "summary": "Tianyan Quantum Cloud Platform offers cloud services demonstrating quantum advantage capabilities with a Zuchongzhi 3.0-like superconducting quantum processor. This cloud-accessible superconducting quantum prototype, named Tianyan-287, features 105 qubits and achieves high operational fidelities, with single-qubit gates, two-qubit gates, and readout fidelity at 99.90%, 99.56%, 98.7%, respectively. For a specific benchmark task involving random circuit sampling on a 74-qubit system over 24 cycles, the platform completes one million samples in just 18.4 minutes. In contrast, state-of-the-art classical supercomputers would require approximately 16,000 years to complete the equivalent calculation. To facilitate this, the platform provides access via Cqlib, an open-source SDK designed for working with quantum systems at the level of extended quantum circuits, operators, and primitives. The cloud service aims to democratize access to high-performance quantum hardware, enabling the community to validate and explore practical quantum advantages.",
+        "published": "2025-12-11T10:23:39+00:00",
+        "updated": "2025-12-16T01:28:55+00:00",
+        "pdf_url": "https://arxiv.org/pdf/2512.10504v2"
+    },
+    "quant-ph/9505018v1": {
+        "title": "Universality in Quantum Computation",
+        "authors": [
+            "D. Deutsch",
+            "A. Barenco",
+            "A. Ekert"
+        ],
+        "summary": "  We show that in quantum computation almost every gate that operates on two or more bits is a universal gate. We discuss various physical considerations bearing on the proper definition of universality for computational components such as logic gates.",
+        "published": "1995-05-24T16:27:15+00:00",
+        "updated": "1995-05-24T16:27:15+00:00",
+        "pdf_url": "https://arxiv.org/pdf/quant-ph/9505018v1"
+    },
+    "2011.03031v2": {
+        "title": "Quantum simulation and computing with Rydberg-interacting qubits",
+        "authors": [
+            "M. Morgado",
+            "S. Whitlock"
+        ],
+        "summary": "Arrays of optically trapped atoms excited to Rydberg states have recently emerged as a competitive physical platform for quantum simulation and computing, where high-fidelity state preparation and readout, quantum logic gates and controlled quantum dynamics of more than 100 qubits have all been demonstrated. These systems are now approaching the point where reliable quantum computations with hundreds of qubits and realistically thousands of multiqubit gates with low error rates should be within reach for the first time. In this article we give an overview of the Rydberg quantum toolbox, emphasizing the high degree of flexibility for encoding qubits, performing quantum operations and engineering quantum many-body Hamiltonians. We then review the state-of-the-art concerning high-fidelity quantum operations and logic gates as well as quantum simulations in many-body regimes. Finally, we discuss computing schemes that are particularly suited to the Rydberg platform and some of the remaining challenges on the road to general purpose quantum simulators and quantum computers.",
+        "published": "2020-11-05T18:44:11+00:00",
+        "updated": "2020-12-30T16:30:50+00:00",
+        "pdf_url": "https://arxiv.org/pdf/2011.03031v2"
+    },
+    "quant-ph/9505016v1": {
+        "title": "A Universal Two--Bit Gate for Quantum Computation",
+        "authors": [
+            "A. Barenco"
+        ],
+        "summary": "  We prove the existence of a class of two--input, two--output gates any one of which is universal for quantum computation. This is done by explicitly constructing the three--bit gate introduced by Deutsch [Proc.~R.~Soc.~London.~A {\\bf 425}, 73 (1989)] as a network consisting of replicas of a single two--bit gate.",
+        "published": "1995-05-24T13:38:19+00:00",
+        "updated": "1995-05-24T13:38:19+00:00",
+        "pdf_url": "https://arxiv.org/pdf/quant-ph/9505016v1"
+    },
+    "quant-ph/0003151v1": {
+        "title": "Unconventional Quantum Computing Devices",
+        "authors": [
+            "Seth Lloyd"
+        ],
+        "summary": "  This paper investigates a variety of unconventional quantum computation devices, including fermionic quantum computers and computers that exploit nonlinear quantum mechanics. It is shown that unconventional quantum computing devices can in principle compute some quantities more rapidly than `conventional' quantum computers.",
+        "published": "2000-03-31T22:07:23+00:00",
+        "updated": "2000-03-31T22:07:23+00:00",
+        "pdf_url": "https://arxiv.org/pdf/quant-ph/0003151v1"
+    }
+}
