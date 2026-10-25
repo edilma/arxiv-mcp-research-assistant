@@ -1,0 +1,30 @@
+
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:/Drive/Desktop/Programming/AI/MCP Servers/Learning/chatbot/papers"
+      ]
+    },
+    "research": {
+      "command": "uv",
+      "args": [
+        "run",
+        "python",
+        "-m",
+        "chatbot.research_server"
+      ]
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ]
+    }
+  }
+}
