@@ -1,0 +1,97 @@
+
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║                  MODEL CONTEXT PROTOCOL (MCP) — ARCHITECTURE                   ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            MCP HOST                                         │
+│          (AI Application — e.g., Claude Desktop, VS Code)                   │
+│                                                                             │
+│   ┌──────────────────────┐        ┌──────────────────────┐                  │
+│   │     MCP Client 1     │        │     MCP Client 2     │   (one client   │
+│   │  (manages one conn.) │        │  (manages one conn.) │    per server)  │
+│   └──────────┬───────────┘        └──────────┬───────────┘                  │
+└──────────────┼──────────────────────────────-┼─────────────────────────────┘
+               │                               │
+               │  TRANSPORT LAYER              │  TRANSPORT LAYER
+               │                               │
+    ┌──────────▼──────────────┐     ┌──────────▼──────────────────────┐
+    │   STDIO Transport       │     │   Streamable HTTP Transport      │
+    │  (local, same machine)  │     │  (remote, HTTP POST + SSE)       │
+    │  - No network overhead  │     │  - OAuth / Bearer Token / API Key│
+    │  - 1 client per server  │     │  - Many clients per server       │
+    └──────────┬──────────────┘     └──────────┬───────────────────────┘
+               │                               │
+               │  DATA LAYER (JSON-RPC 2.0)    │  DATA LAYER (JSON-RPC 2.0)
+               │                               │
+    ┌──────────▼──────────────┐     ┌──────────▼───────────────────────┐
+    │     MCP SERVER A        │     │        MCP SERVER B              │
+    │   (Local — e.g.,        │     │   (Remote — e.g.,                │
+    │    Filesystem Server)   │     │    Sentry MCP Server)            │
+    │                         │     │                                  │
+    │  Exposes Primitives:    │     │  Exposes Primitives:             │
+    │  ┌─────────────────┐    │     │  ┌─────────────────┐            │
+    │  │ 🔧 Tools        │    │     │  │ 🔧 Tools        │            │
+    │  │  (tools/list,   │    │     │  │  (tools/list,   │            │
+    │  │   tools/call)   │    │     │  │   tools/call)   │            │
+    │  ├─────────────────┤    │     │  ├─────────────────┤            │
+    │  │ 📦 Resources    │    │     │  │ 📦 Resources    │            │
+    │  │ (resources/list,│    │     │  │ (resources/list,│            │
+    │  │  resources/read)│    │     │  │  resources/read)│            │
+    │  ├─────────────────┤    │     │  ├─────────────────┤            │
+    │  │ 💬 Prompts      │    │     │  │ 💬 Prompts      │            │
+    │  │ (prompts/list,  │    │     │  │ (prompts/list,  │            │
+    │  │  prompts/get)   │    │     │  │  prompts/get)   │            │
+    │  └─────────────────┘    │     │  └─────────────────┘            │
+    └─────────────────────────┘     └──────────────────────────────────┘
+
+
+════════════════════════════ DATA LAYER DETAIL ════════════════════════════════
+
+  CLIENT  ──────── server/discover ────────────────────────►  SERVER
+          ◄─────── capabilities, versions, identity ─────────
+          ──────── tools/list ──────────────────────────────►
+          ◄─────── [{name, description, inputSchema}, ...] ──
+          ──────── tools/call  {name, arguments} ──────────►
+          ◄─────── {result / error} ────────────────────────
+          ──────── resources/list ─────────────────────────►
+          ◄─────── [{uri, name, mimeType}, ...] ────────────
+          ──────── resources/read {uri} ───────────────────►
+          ◄─────── {contents: [...]} ───────────────────────
+          ──────── subscriptions/listen ───────────────────►
+          ◄════════ notifications/tools/list_changed ════════  (real-time)
+          ◄════════ notifications/resources/list_changed ════  (real-time)
+
+  SERVER  ──────── elicitation/create ─────────────────────►  CLIENT
+          ◄─────── {user input / confirmation} ────────────
+
+
+═══════════════════════════ TWO-LAYER MODEL ═══════════════════════════════════
+
+  ╔═══════════════════════════════════════════╗
+  ║           TRANSPORT LAYER (outer)         ║
+  ║  ┌─────────────────────────────────────┐  ║
+  ║  │         DATA LAYER (inner)          │  ║
+  ║  │                                     │  ║
+  ║  │   JSON-RPC 2.0 messages             │  ║
+  ║  │   • Discovery  (server/discover)    │  ║
+  ║  │   • Primitives (tools/resources/    │  ║
+  ║  │                  prompts)           │  ║
+  ║  │   • Notifications (subscriptions)   │  ║
+  ║  │   • Elicitation                     │  ║
+  ║  │   • Tasks (extension)               │  ║
+  ║  └─────────────────────────────────────┘  ║
+  ║                                           ║
+  ║   STDIO Transport  |  HTTP+SSE Transport  ║
+  ╚═══════════════════════════════════════════╝
+
+
+═══════════════════════════ KEY DESIGN FACTS ══════════════════════════════════
+
+  • Stateless protocol  — every request is self-contained (_meta carries
+                          version + capabilities + identity)
+  • Transport-agnostic  — same JSON-RPC 2.0 wire format for all transports
+  • Composable          — one host can connect to N servers simultaneously
+  • Dynamic             — primitive lists can change; servers push notifications
+  • Extensible          — optional extensions (e.g., Tasks) built on core
+
