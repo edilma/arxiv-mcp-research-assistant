@@ -22,7 +22,11 @@ async def chat_loop(self):
 
 async def main():
     chatbot = MCP_ChatBot()
-    await chatbot.connect_to_server_and_run(chat_loop)
+    try:
+        await chatbot.connect_to_servers()
+        await chat_loop(chatbot)
+    finally:
+        await chatbot.cleanup()
 
 
 def run():

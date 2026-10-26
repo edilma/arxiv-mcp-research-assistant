@@ -1,22 +1,82 @@
-from typing import List
-import anthropic
 from dotenv import load_dotenv
+import anthropic
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
+from typing import List, Dict, TypedDict
+from contextlib import AsyncExitStack
+import json
 
 
-load_dotenv() 
+load_dotenv(override=True) 
+
+class ToolDefinition(TypedDict):
+    name: str
+    description: str
+    input_schema: dict
 
 class MCP_ChatBot:
     def __init__(self):
         # Initialize session and client objects
-        self.session: ClientSession | None = None
+        self.sessions: List[ClientSession] = []
+        self.exit_stack = AsyncExitStack()
         self.anthropic = anthropic.Anthropic()
-        self.available_tools: List[dict] = []
+        self.available_tools: List[ToolDefinition] = []
+        self.tool_to_session: Dict[str, ClientSession] = {}
+
+
+    async def connect_to_server(
+        self, server_name: str, server_config: dict
+    ) -> None:
+        """Connect to a single MCP server."""
+
+        server_params = StdioServerParameters(**server_config)
+
+        # Open the server transport
+        read, write = await self.exit_stack.enter_async_context(
+            stdio_client(server_params)
+        )
+
+        # Create and initialize the MCP session
+        session = await self.exit_stack.enter_async_context(
+            ClientSession(read, write)
+        )
+
+        await session.initialize()
+        self.sessions.append(session)
+
+        # Discover tools exposed by this server
+        response = await session.list_tools()
+
+        print(
+            f"Connected to {server_name} with tools:",
+            [tool.name for tool in response.tools]
+        )
+
+        for tool in response.tools:
+            self.tool_to_session[tool.name] = session
+
+            self.available_tools.append({
+                "name": tool.name,
+                "description": tool.description or "",
+                "input_schema": tool.input_schema
+            })
+
+    async def connect_to_servers(self):
+        """Connect to all configured MCP servers."""
+
+        with open("server_config.json", "r") as file:
+            data = json.load(file)
+
+        servers = data.get("mcpServers", {})
+
+        for server_name, server_config in servers.items():
+            await self.connect_to_server(server_name, server_config)
 
 
     async def process_query(self, query):
         messages = [{"role": "user", "content": query}]
+
+        
 
         while True:
             response = self.anthropic.messages.create(
@@ -40,7 +100,7 @@ class MCP_ChatBot:
 
                     print(f"Calling tool {tool_name} with args {tool_args}")
 
-                    result = await self.session.call_tool(
+                    result = await self.tool_to_session[tool_name].call_tool(
                         tool_name,
                         arguments=tool_args
                     )
@@ -76,31 +136,6 @@ class MCP_ChatBot:
                 "content": tool_results
             })
 
-
-    async def connect_to_server_and_run(self, chat_loop):
-            # Create server parameters for stdio connection
-            server_params = StdioServerParameters(
-                command="uv",  # Executable
-                args=["run", "python","-m","chatbot.research_server"],  # Optional command line arguments
-                env=None,  # Optional environment variables
-            )
-            async with stdio_client(server_params) as (read, write):
-                async with ClientSession(read, write) as session:
-                    self.session = session
-                    # Initialize the connection
-                    await session.initialize()
-        
-                    # List available tools
-                    response = await session.list_tools()
-                    
-                    tools = response.tools
-                    print("\nConnected to server with tools:", [tool.name for tool in tools])
-                    
-                    self.available_tools = [{
-                        "name": tool.name,
-                        "description": tool.description,
-                        "input_schema": tool.input_schema
-                    } for tool in response.tools]
-
-                    # Keep session open during conversation
-                    await chat_loop(self)
+    async def cleanup(self):
+        """Close all MCP server connections."""
+        await self.exit_stack.aclose()
