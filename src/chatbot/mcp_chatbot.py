@@ -24,6 +24,7 @@ class MCP_ChatBot:
         self.tool_to_session: Dict[str, ClientSession] = {}
 
 
+
     async def connect_to_server(
         self, server_name: str, server_config: dict
     ) -> None:
@@ -60,6 +61,24 @@ class MCP_ChatBot:
                 "description": tool.description or "",
                 "input_schema": tool.input_schema
             })
+
+        # Discover resources and prompts from the research server
+        if server_name == "research":
+            resources = await session.list_resources()
+            templates = await session.list_resource_templates()
+            prompts = await session.list_prompts()
+
+            print("Resources:", [
+                str(r.uri) for r in resources.resources
+            ])
+
+            print("Templates:", [
+                t.uri_template for t in templates.resource_templates
+            ])
+
+            print("Prompts:", [
+                p.name for p in prompts.prompts
+            ])
 
     async def connect_to_servers(self):
         """Connect to all configured MCP servers."""

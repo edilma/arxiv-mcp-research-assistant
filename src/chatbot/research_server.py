@@ -112,5 +112,67 @@ def extract_info(paper_id: str) -> str:
     return f"Paper with ID {paper_id} not found."
 
 
+@mcp.resource("papers://folders")
+def get_available_folders() -> str:
+    """List topics containing saved paper information."""
+    folders = []
+
+    if PAPER_DIR.exists():
+        for topic_dir in PAPER_DIR.iterdir():
+            if topic_dir.is_dir() and (topic_dir / "papers.json").exists():
+                folders.append(topic_dir.name)
+
+    if not folders:
+        return "No saved research topics found."
+
+    return "# Available Topics\n\n" + "\n".join(
+        f"- {folder}" for folder in sorted(folders)
+    )
+
+
+@mcp.resource("papers://{topic}")
+def get_topic_papers(topic: str) -> str:
+    """Return the saved research papers for a specific topic."""
+
+    file_path = PAPER_DIR / topic / "papers.json"
+
+    if not file_path.is_file():
+        return f"No saved papers found for topic: {topic}"
+
+    try:
+        with open(file_path, "r", encoding="utf-8") as json_file:
+            papers_info = json.load(json_file)
+
+        return json.dumps(papers_info, indent=4)
+
+    except json.JSONDecodeError:
+        return f"Error: papers.json for {topic} is invalid."
+
+@mcp.prompt()
+def generate_search_prompt(topic: str, num_papers: int = 5) -> str:
+    """Generate a prompt for Claude to find and discuss academic papers on a specific topic."""
+    return f"""Search for {num_papers} academic papers about '{topic}' using the search_papers tool. Follow these instructions:
+    1. First, search for papers using search_papers(topic='{topic}', max_results={num_papers})
+    2. For each paper found, extract and organize the following information:
+       - Paper title
+       - Authors
+       - Publication date
+       - Brief summary of the key findings
+       - Main contributions or innovations
+       - Methodologies used
+       - Relevance to the topic '{topic}'
+    
+    3. Provide a comprehensive summary that includes:
+       - Overview of the current state of research in '{topic}'
+       - Common themes and trends across the papers
+       - Key research gaps or areas for future investigation
+       - Most impactful or influential papers in this area
+    
+    4. Organize your findings in a clear, structured format with headings and bullet points for easy readability.
+    
+    Please present both detailed information about each paper and a high-level synthesis of the research landscape in {topic}."""
+
+
+
 if __name__ == "__main__":
     mcp.run(transport="stdio") 
