@@ -1,0 +1,64 @@
+{
+  "source": "Consumer Financial Protection Bureau (CFPB)",
+  "source_url": "https://www.consumerfinance.gov/consumer-tools/credit-cards/",
+  "retrieved_date": "2025-07-10",
+  "description": "Articles related to credit card debt, interest rates, and repayment, verified from CFPB pages.",
+  "articles": [
+    {
+      "title": "What is a credit card interest rate? What does APR mean?",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-does-my-credit-card-company-calculate-the-amount-of-interest-i-owe-en-44/",
+      "category": "Interest Rates",
+      "last_reviewed": "August 28, 2023",
+      "summary": "Explains that a credit card's interest rate — expressed as the Annual Percentage Rate (APR) — is the price paid for borrowing money. On most cards, consumers can avoid paying interest on purchases entirely by paying their full balance each month by the due date."
+    },
+    {
+      "title": "What do I need to know about consolidating my credit card debt?",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-do-i-need-to-know-about-consolidating-my-credit-card-debt-en-1861/",
+      "category": "Credit Card Debt / Repayment",
+      "last_reviewed": "September 2, 2026",
+      "summary": "Covers the main options for debt consolidation — balance transfers, debt consolidation loans, and home equity loans — and the risks of each. Advises consumers to seek free nonprofit credit counseling, understand why they are in debt, build a budget, and contact individual creditors directly before pursuing consolidation. Warns that teaser rates expire and that consolidation loans can cost more in fees and interest over time."
+    },
+    {
+      "title": "What is a debt relief program and how do I know if I should use one?",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/ive-seen-a-lot-of-advertisements-for-companies-that-consolidate-credit-card-debt-are-these-legitimate-en-1457/",
+      "category": "Credit Card Debt",
+      "last_reviewed": "August 28, 2023",
+      "summary": "Explains what debt settlement or debt relief companies are and the serious risks of using them, including expensive fees, damage to credit scores, potential lawsuits from creditors, and the possibility of ending up deeper in debt. Recommends nonprofit credit counseling as a safer alternative. Also notes that servicemembers with pre-service loans have special protections under the Servicemembers Civil Relief Act (SCRA), including a 6% interest rate cap."
+    },
+    {
+      "title": "What is a grace period for a credit card?",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-grace-period-for-a-credit-card-en-47/",
+      "category": "Interest Rates / Repayment",
+      "last_reviewed": "September 23, 2024",
+      "summary": "Defines a grace period as the time between the end of a billing cycle and the payment due date during which no interest is charged — provided the full balance is paid by the due date. Notes that card companies are not required to offer a grace period, that grace periods typically apply only to purchases (not cash advances), and that failing to pay in full in any given month causes a consumer to lose the grace period for that month and the next."
+    },
+    {
+      "title": "If I pay off my credit card balance when it is due, is the company allowed to charge me interest for that month?",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/if-i-pay-off-my-credit-card-balance-when-it-is-due-is-the-company-allowed-to-charge-me-interest-for-that-month-en-48/",
+      "category": "Interest Rates / Repayment",
+      "last_reviewed": "October 19, 2023",
+      "summary": "Clarifies that when a consumer carries a balance, most card companies charge interest from the billing date until payment is received — meaning interest may still accrue even if a payment is made by the due date. Rules vary by issuer and are detailed in the cardholder agreement."
+    },
+    {
+      "title": "I got a credit card promising no interest for a purchase if I pay in full within 12 months. How does this work?",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/can-my-credit-card-company-change-the-terms-of-my-account-en-40/",
+      "category": "Interest Rates / Repayment",
+      "last_reviewed": "January 22, 2024",
+      "summary": "Explains how deferred interest plans work: no interest is charged if the full purchase balance is paid off within the promotional period (e.g., 12 months), but if any balance remains — or a minimum payment is missed by 60+ days — interest is charged retroactively from the original purchase date. Provides five practical tips: know the period end date, pay more than the minimum, request extra payments be applied to the deferred balance, pay on time, and aim to pay off well before the deadline."
+    },
+    {
+      "title": "Credit cards key terms: Annual Percentage Rate (APR), Balance Transfer, Daily Periodic Rate, Grace Period, and Interest Rate",
+      "url": "https://www.consumerfinance.gov/consumer-tools/credit-cards/answers/key-terms/",
+      "category": "Interest Rates / Credit Card Debt",
+      "last_reviewed": "December 28, 2022",
+      "summary": "A glossary of essential credit card terms directly related to debt and interest. Key definitions include: APR (the standard yearly cost of borrowing, encompassing interest and fees); Balance Transfer (moving debt between cards, often with a fee, and promotional low rates that expire); Daily Periodic Rate (interest compounded daily on the end-of-day balance); Grace Period (interest-free window if the full balance is paid on time); and Interest Rate (the cost of borrowing, typically expressed as APR and avoidable by paying in full each month)."
+    },
+    {
+      "title": "What should I do if my payment does not show on my credit card statement?",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/i-let-the-card-issuer-know-i-was-closing-my-account-they-are-still-charging-me-interest-can-they-do-that-en-77/",
+      "category": "Repayment",
+      "last_reviewed": "September 23, 2024",
+      "summary": "Advises consumers whose credit card payments are not reflected on their statement to send a written billing error notice to the card issuer within 60 days of the statement date. While the dispute is pending, the consumer is not required to pay the disputed amount or related interest charges, and cannot lose any grace period as a result of not paying the disputed portion. The undisputed balance must still be paid."
+    }
+  ]
+}
